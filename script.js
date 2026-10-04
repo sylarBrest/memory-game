@@ -33,7 +33,7 @@ const disableMatchedCards = () => {
   movesResultSpan.textContent = moves;
   pairs += 1;
   const pairsResultSpan = document.querySelector('.pairs-result');
-  pairsResultSpan.textContent = pairs;
+  pairsResultSpan.textContent = `${pairs} / ${COLS + ROWS}`;
   firstCard.removeEventListener('click', flipCard);
   secondCard.removeEventListener('click', flipCard);
   resetBoard();
@@ -77,6 +77,57 @@ function flipCard(event) {
   }
 }
 
+const createModal = (mode) => {
+  const modal = document.createElement('dialog');
+  modal.classList.add('modal');
+  const modalContainer = document.createElement('div');
+  modalContainer.classList.add('modal-container');
+  const modalTitle = document.createElement('p');
+  modalTitle.classList.add('modal-title');
+  const modalMoves = document.createElement('p');
+  modalMoves.classList.add('modal-moves');
+  const modalButtons = document.createElement('div');
+  modalButtons.classList.add('modal-buttons');
+  const newGameButton = document.createElement('button');
+  newGameButton.classList.add('button', 'modal-new-game');
+  newGameButton.textContent = 'New Game';
+  newGameButton.addEventListener('click', startNewGame);
+  const closeModalButton = document.createElement('button');
+  closeModalButton.classList.add('button', 'modal-close');
+  closeModalButton.textContent = 'Close';
+  closeModalButton.addEventListener('click', () => modal.close());
+  modalButtons.append(newGameButton, closeModalButton);
+  modalContainer.append(modalTitle, modalMoves, modalButtons);
+  modal.append(modalContainer);
+  modal.addEventListener('click', (event) => {
+    if (!modalContainer.contains(event.target)) {
+      modal.close();
+    }
+  });
+
+  document.body.append(modal);
+};
+
+const showModal = (mode) => {
+  const modal = document.querySelector('.modal');
+  const modalTitle = modal.querySelector('.modal-title');
+  const modalMoves = modal.querySelector('.modal-moves');
+  switch (mode) {
+    case 'win':
+      modal.classList.add('win');
+      modalTitle.textContent = 'Congratulations!';
+      modalMoves.textContent = `You made ${moves} moves!`;
+      break;
+    case 'records':
+      modalTitle.textContent = '10 Best Results';
+      modalMoves.textContent = 'No results yet...';
+      break;
+    default:
+      break;
+  }
+  modal.showModal();
+};
+
 const createHeader = () => {
   const header = document.createElement('header');
   header.classList.add('footer');
@@ -93,6 +144,7 @@ const createHeader = () => {
   const tableOfRecordsLink = document.createElement('li');
   tableOfRecordsLink.classList.add('nav-item', 'table-of-records');
   tableOfRecordsLink.textContent = 'Table of records';
+  tableOfRecordsLink.addEventListener('click', () => showModal('records'));
 
   document.body.append(header);
   header.append(headerContainer);
@@ -109,11 +161,11 @@ const createCard = (index, order, face) => {
   card.dataset.face = face;
   card.addEventListener('click', flipCard);
   const faceImage = document.createElement('img');
-  faceImage.className = 'face';
+  faceImage.classList.add('face');
   faceImage.src = `assets/svg/${face}.svg`;
   faceImage.alt = `card ${index}`;
   const backImage = document.createElement('img');
-  backImage.className = 'back';
+  backImage.classList.add('back');
   backImage.src = 'assets/svg/js.svg';
   backImage.alt = 'card';
 
@@ -160,7 +212,7 @@ const createFooter = () => {
   footerPairsText.textContent = 'Pairs:';
   const footerPairsResult = document.createElement('span');
   footerPairsResult.classList.add('pairs-result');
-  footerPairsResult.textContent = '0';
+  footerPairsResult.textContent = '0 / 8';
 
   document.body.append(footer);
   footer.append(footerContainer);
@@ -173,6 +225,7 @@ const loadPage = () => {
   createHeader();
   createMain();
   createFooter();
+  createModal();
 };
 
 loadPage();

@@ -1,8 +1,8 @@
 :root {
   --bg-container: #007d9c;
   --bg-main: #d8e4fa;
+  --bg-overlay: #2c2929bd;
   --text-main: #464646;
-  --color-gold: #bdae82;
   --color-white: #ffffff;
 }
 
@@ -132,4 +132,62 @@ body {
 .footer-pairs {
   display: flex;
   gap: 20px;
+  inline-size: 120px;
+}
+
+.modal {
+  margin: auto;
+  border: none;
+  inline-size: 500px;
+  border-radius: 40px;
+  background-color: var(--bg-container);
+  color: var(--color-white);
+  opacity: 0;
+  transform: translateY(700px);
+  transition: all 0.5s ease-in-out;
+}
+
+.modal:open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@starting-style {
+  .modal:open {
+    opacity: 0;
+    transform: translateY(700px);
+  }
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 16px;
+}
+
+.modal-buttons {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  inline-size: 140px;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  font: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: var(--bg-main);
+}
+
+.modal::backdrop {
+  background-color: var(--bg-overlay);
 }
