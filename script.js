@@ -12,7 +12,70 @@ const cards = [
 const ROWS = 4,
   COLS = 4;
 
+let isFlippedCard = false;
+let isLockedBoard = false;
+let firstCard, secondCard;
+let moves = 0;
+let pairs = 0;
+
+const resetBoard = () => {
+  [isFlippedCard, isLockedBoard] = [false, false];
+  [firstCard, secondCard] = [null, null];
+};
+
 const getRandomPosition = (all) => Math.floor(Math.random() * all);
+
+const startNewGame = () => window.location.reload();
+
+const disableMatchedCards = () => {
+  moves += 1;
+  const movesResultSpan = document.querySelector('.moves-result');
+  movesResultSpan.textContent = moves;
+  pairs += 1;
+  const pairsResultSpan = document.querySelector('.pairs-result');
+  pairsResultSpan.textContent = pairs;
+  firstCard.removeEventListener('click', flipCard);
+  secondCard.removeEventListener('click', flipCard);
+  resetBoard();
+};
+
+const unFlipCards = () => {
+  isLockedBoard = true;
+  setTimeout(() => {
+    moves += 1;
+    const movesResultSpan = document.querySelector('.moves-result');
+    movesResultSpan.textContent = moves;
+    firstCard.classList.remove('flip');
+    secondCard.classList.remove('flip');
+    resetBoard();
+  }, 1000);
+};
+
+const checkForMatch = () => {
+  firstCard.dataset.face === secondCard.dataset.face
+    ? disableMatchedCards()
+    : unFlipCards();
+};
+
+function flipCard(event) {
+  const card = event.target.closest('.card');
+  if (card) {
+    if (isLockedBoard) {
+      return;
+    }
+    if (card === firstCard) {
+      return;
+    }
+    card.classList.add('flip');
+    if (!isFlippedCard) {
+      isFlippedCard = true;
+      firstCard = card;
+      return;
+    }
+    secondCard = card;
+    checkForMatch();
+  }
+}
 
 const createHeader = () => {
   const header = document.createElement('header');
@@ -26,6 +89,7 @@ const createHeader = () => {
   const newGameLink = document.createElement('li');
   newGameLink.classList.add('nav-item', 'new-game');
   newGameLink.textContent = 'New game';
+  newGameLink.addEventListener('click', startNewGame);
   const tableOfRecordsLink = document.createElement('li');
   tableOfRecordsLink.classList.add('nav-item', 'table-of-records');
   tableOfRecordsLink.textContent = 'Table of records';
@@ -43,6 +107,7 @@ const createCard = (index, order, face) => {
   card.ariaLabel = 'card';
   card.style.order = order;
   card.dataset.face = face;
+  card.addEventListener('click', flipCard);
   const faceImage = document.createElement('img');
   faceImage.className = 'face';
   faceImage.src = `assets/svg/${face}.svg`;

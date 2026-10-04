@@ -48,6 +48,15 @@ body {
   justify-content: space-between;
 }
 
+.nav-item {
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-item:hover {
+  color: var(--text-main);
+}
+
 .main {
   flex: 1;
   display: flex;
@@ -80,6 +89,15 @@ body {
   transform-style: preserve-3d;
   transition: transform 0.5s;
   cursor: url(assets/img/pointer.png) 7 0, pointer;
+}
+
+.card:active {
+  transform: scale(0.97);
+  transition: transform 0.3s;
+}
+
+.card.flip {
+  transform: rotateY(180deg);
 }
 
 .back,
