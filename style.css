@@ -16,6 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   min-inline-size: 320px;
+  min-block-size: 100dvh;
   background: var(--bg-main);
   color: var(--text-main);
   font: normal normal 20px/40px 'Poppins', 'Roboto', Verdana, sans-serif;
@@ -23,14 +24,13 @@ body {
 
 .container {
   inline-size: calc(100% - 40px);
-  max-inline-size: 1440px;
+  max-inline-size: 600px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
 .header-container {
-  padding: 5px 20px;
-  block-size: 60px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -49,7 +49,10 @@ body {
 }
 
 .main {
-  min-block-size: calc(100vh - 120px);
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-container {
@@ -57,21 +60,58 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  padding: 20px 0;
+  padding: 20px;
+}
+
+.game-board {
+  inline-size: 560px;
+  block-size: 700px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  perspective: 1200px;
+}
+
+.card {
+  position: relative;
+  inline-size: calc(25% - 8px);
+  block-size: calc(25% - 8px);
+  transform: scale(1);
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  cursor: url(assets/img/pointer.png) 7 0, pointer;
+}
+
+.back,
+.face {
+  position: absolute;
+  padding: 5px;
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: 5px;
+  backface-visibility: hidden;
+}
+
+.back {
+  background: rgba(204, 204, 180, 0.5);
+}
+
+.face {
+  transform: rotateY(180deg);
+  background: #f4f1fc;
 }
 
 .footer-container {
-  block-size: 60px;
   color: var(--color-white);
   display: flex;
   justify-content: space-around;
   align-items: center;
-  gap: 50px;
-  padding: 5px 20px;
+  padding: 10px 20px;
   background-color: var(--bg-container);
 }
 
-.footer-moves {
+.footer-moves,
+.footer-pairs {
   display: flex;
   gap: 20px;
 }
