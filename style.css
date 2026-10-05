@@ -73,8 +73,9 @@ body {
 }
 
 .game-board {
-  inline-size: 560px;
-  block-size: 700px;
+  max-inline-size: 560px;
+  inline-size: 100%;
+  block-size: clamp(25rem, 6.637rem + 77.32vi, 43.75rem);
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
